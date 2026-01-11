@@ -1,6 +1,9 @@
+import logging
 from django.core.cache import cache
 from django_redis import get_redis_connection
 from .models import Property
+
+logger = logging.getLogger(__name__)
 
 def get_all_properties():
     all_properties = cache.get('all_properties')
@@ -32,10 +35,10 @@ def get_redis_cache_metrics():
             'hit_ratio': hit_ratio
         }
         
-        # Log metrics (using print as a simple logger for now, or use logging module)
-        print(f"Redis Metrics: {metrics}")
+        # Log metrics
+        logger.info(f"Redis Metrics: {metrics}")
         
         return metrics
     except Exception as e:
-        print(f"Error retrieving Redis metrics: {e}")
+        logger.error(f"Error retrieving Redis metrics: {e}")
         return {'error': str(e)}
